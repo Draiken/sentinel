@@ -16,7 +16,11 @@ defmodule Sentinel.Controllers.Users do
   """
   def create(conn, params) do
     case UserRegistration.register(params) do
-      {:ok, _reason} -> # User registered but not logged in (needs invite or activation)
+      {:ok, :needs_confirmation, _confirmation_token} -> # User registered but not logged in (needs invite or activation)
+        conn
+        |> put_status(201)
+        |> json(:ok)
+      {:ok, :needs_invitation, _confirmation_token} -> # User registered but not logged in (needs invite or activation)
         conn
         |> put_status(201)
         |> json(:ok)

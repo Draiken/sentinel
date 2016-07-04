@@ -99,12 +99,12 @@ defmodule Sentinel.UserRegistration do
 
         Mailer.send_invite_email(user, {confirmation_token, password_reset_token})
 
-        {:ok, :needs_invitation}
+        {:ok, :needs_invitation, confirmation_token}
 
       {:required, _invitable} -> # must be confirmed
         Mailer.send_welcome_email(user, confirmation_token)
 
-        {:ok, :needs_confirmation}
+        {:ok, :needs_confirmation, confirmation_token}
 
       {_confirmable_default, _invitable} -> # default behavior, optional confirmable, not invitable
         Mailer.send_welcome_email(user, confirmation_token)
