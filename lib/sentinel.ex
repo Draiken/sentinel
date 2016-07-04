@@ -5,6 +5,7 @@ defmodule Sentinel do
       post    "users/:id/invited",     Sentinel.Controllers.Users, :invited
       if Application.get_env(:sentinel, :confirmable) != :false do
         post    "users/:id/confirm",     Sentinel.Controllers.Users, :confirm
+        get     "users/:id/confirm",     Sentinel.Controllers.Users, :confirm
       end
       post    "sessions",              Sentinel.Controllers.Sessions, :create
       delete  "sessions",              Sentinel.Controllers.Sessions, :delete
