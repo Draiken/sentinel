@@ -24,7 +24,7 @@ defmodule Sentinel.Controllers.Html.Sessions do
         conn
         |> Guardian.Plug.sign_in(user)
         |> put_flash(:info, "Successfully logged in")
-        |> redirect(to: "/")
+        |> redirect(to: html_paths.after_sign_in_path(conn, user))
       {:error, _errors} ->
         conn
         |> put_flash(:error, "Unable to authenticate successfully")
@@ -43,7 +43,7 @@ defmodule Sentinel.Controllers.Html.Sessions do
         conn
         |> Guardian.Plug.sign_in(user)
         |> put_flash(:info, "Successfully logged in")
-        |> redirect(to: "/")
+        |> redirect(to: html_paths.after_sign_in_path(conn, user))
       {:error, _errors} ->
         conn
         |> put_flash(:error, "Unable to authenticate successfully")
@@ -58,6 +58,10 @@ defmodule Sentinel.Controllers.Html.Sessions do
   def delete(conn, _params) do
     Guardian.Plug.sign_out(conn)
     |> put_flash(:info, "Logged out successfully.")
-    |> redirect(to: Sentinel.RouterHelper.helpers.sessions_path(conn, :new))
+    |> redirect(to: html_paths.after_sign_out_path(conn))
+  end
+
+  defp html_paths do
+    Application.get_env(:sentinel, :html_paths, Sentinel.HtmlPaths.Default)
   end
 end
