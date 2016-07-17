@@ -30,22 +30,22 @@ defmodule Sentinel.Controllers.Html.User do
         conn
         |> Guardian.Plug.sign_in(user)
         |> put_flash(:info, "Successfully logged in")
-        |> redirect(to: "/")
+        |> redirect(to: redirections.after_sign_up_path(conn, user))
       {_confirmable, :true} -> # must be invited
         conn
         |> Guardian.Plug.sign_in(user)
         |> put_flash(:info, "Successfully invited the user")
-        |> redirect(to: Sentinel.RouterHelper.helpers.user_path(conn, :new))
+        |> redirect(to: redirections.after_invited_path(conn, user))
       {:required, _invitable} -> # must be confirmed
         conn
         |> Guardian.Plug.sign_in(user)
         |> put_flash(:info, "Successfully created account. Please confirm your account")
-        |> redirect(to: Sentinel.RouterHelper.helpers.sessions_path(conn, :new))
+        |> redirect(to: redirections.after_confirmation_sent_path(conn, user))
       {_confirmable_default, _invitable} -> # default behavior, optional confirmable, not invitable
         conn
         |> Guardian.Plug.sign_in(user)
         |> put_flash(:info, "Successfully logged in. Please confirm your account")
-        |> redirect(to: "/")
+        |> redirect(to: redirections.after_sign_up_path(conn, user))
     end
   end
 
@@ -92,5 +92,9 @@ defmodule Sentinel.Controllers.Html.User do
         |> put_flash(:error, "Unable to setup your account")
         |> redirect(to: Sentinel.RouterHelper.helpers.user_path(:new))
     end
+  end
+
+  defp redirections do
+    Application.get_env(:sentinel, :redirections, Sentinel.Redirections.Default)
   end
 end
