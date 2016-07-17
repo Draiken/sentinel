@@ -7,7 +7,7 @@ defmodule Sentinel.Redirections do
 
   defmacro __using__(_) do
     quote do
-      @behaviour Sentinel.HtmlPaths
+      @behaviour Sentinel.Redirections
 
       def after_sign_in_path(_conn, _user) do
         "/"
