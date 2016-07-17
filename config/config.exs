@@ -18,4 +18,7 @@ config :comeonin, :bcrypt_log_rounds, 4
 config :sentinel, Sentinel.Mailer,
   adapter: Bamboo.LocalAdapter
 
+config :sentinel, Sentinel,
+  redirections: Sentinel.Redirections.Default
+
 import_config "#{Mix.env}.exs"

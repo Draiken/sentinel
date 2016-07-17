@@ -62,6 +62,6 @@ defmodule Sentinel.Controllers.Html.Sessions do
   end
 
   defp redirections do
-    Application.get_env(:sentinel, :redirections, Sentinel.Redirections.Default)
+    Application.get_env(:sentinel, :redirections)
   end
 end
